@@ -1,0 +1,31 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.6.12 <0.9.0;
+
+contract MyCasino {
+
+    mapping(address => uint) public balances;
+   
+    // Deposit Function
+    function deposit(address _address, uint _value) public {
+        require(_value > 1000, "Deposit value must be more than 1000 Chips");
+
+        balances[_address] += _value;
+       
+        assert(balances[_address] >= _value);
+        if (balances[_address] < _value) {
+            revert("Deposit Failed");
+        }
+    }
+
+    // Withdraw Function
+    function withdraw(address _address, uint _value) public {
+        require(balances[_address] >= _value, "Insufficient Chips");
+      
+        balances[_address] -= _value;
+       
+        assert(balances[_address] >= 0);
+        if (balances[_address] < 0) {
+            revert("Withdrawal Failed");
+        }
+    }
+}
